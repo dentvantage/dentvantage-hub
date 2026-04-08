@@ -1,0 +1,84 @@
+{
+  "ordinace": "MUDr. Pavel Vachulka",
+  "slug": "vachulka",
+  "sa": {
+    "telegram_chat_id": "5858139701",
+    "check_den": "monday",
+    "check_hodina": 8,
+    "fa_signal_threshold_pct": 10,
+    "dodavatele": [
+      {
+        "id": "stomcentrum",
+        "nazev": "Stomatologické centrum",
+        "email": "objednavky@stomcentrum.cz",
+        "url": "https://www.stomcentrum.cz"
+      },
+      {
+        "id": "dentalklinik",
+        "nazev": "Dentalklinik CZ",
+        "email": "info@dentalklinik.cz",
+        "url": "https://www.dentalklinik.cz"
+      },
+      {
+        "id": "nextdent",
+        "nazev": "NextDent CZ",
+        "email": "cz@nextdent.com",
+        "url": "https://nextdent.com"
+      }
+    ],
+    "materialy": [
+      {
+        "id": "SUP-20",
+        "nazev": "Supracain 20mg/ml",
+        "kategorie": "anestetika",
+        "jednotka": "ampule",
+        "zasoba": 12,
+        "minimum": 20,
+        "objednat_ks": 40,
+        "spotreba_tyden": 8,
+        "dodavatel_id": "stomcentrum",
+        "cena_kc": 14.50,
+        "kat_cislo_dodavatele": "SUP-4920"
+      },
+      {
+        "id": "UBI-40",
+        "nazev": "Ubistesin forte 4%",
+        "kategorie": "anestetika",
+        "jednotka": "ampule",
+        "zasoba": 25,
+        "minimum": 20,
+        "objednat_ks": 40,
+        "spotreba_tyden": 6,
+        "dodavatel_id": "stomcentrum",
+        "cena_kc": 16.20,
+        "kat_cislo_dodavatele": "UBI-4040"
+      },
+      {
+        "id": "BULK-A2",
+        "nazev": "Tetric EvoFlow Bulk Fill A2",
+        "kategorie": "vylnovy_material",
+        "jednotka": "strikacka",
+        "zasoba": 3,
+        "minimum": 5,
+        "objednat_ks": 10,
+        "spotreba_tyden": 1,
+        "dodavatel_id": "dentalklinik",
+        "cena_kc": 680.00,
+        "kat_cislo_dodavatele": "IVX-559893"
+      },
+      {
+        "id": "CAOH-2",
+        "nazev": "Calcipex II (CaOH pasta)",
+        "kategorie": "endodoncie",
+        "jednotka": "strikacka",
+        "zasoba": 4,
+        "minimum": 3,
+        "objednat_ks": 6,
+        "spotreba_tyden": 0.5,
+        "dodavatel_id": "dentalklinik",
+        "cena_kc": 320.00,
+        "kat_cislo_dodavatele": "CAL-21002"
+      }
+    ]
+  }
+}
