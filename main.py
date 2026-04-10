@@ -24,6 +24,12 @@ from sklad import (
     predikuj_dny_do_dochazeni
 )
 from sa_agent import navrhni_objednavky, zpracuj_telegram_prikaz, fa_signal_text
+from users import (
+    get_user, get_owner, prikaz_povolen, ma_pravo,
+    registruj_pending, schval_uzivatele, zamitni_uzivatele,
+    seznam_uzivatelu, text_zadost_o_pristup, text_vitejte,
+    text_pristup_odmitnuto, text_neznam_uzivatele
+)
 
 # ─────────────────────────────────────────────
 # KONFIGURACE
@@ -215,6 +221,34 @@ def zpracuj_update(update: dict):
             tg_answer_callback(cq_id, "❌ Zamítnuto")
             tg_edit_message(chat_id, message_id, "❌ Objednávka zamítnuta.")
 
+        # ── User management callbacky ──
+        elif data.startswith("user_schval_"):
+            parts = data.split("_")
+            novy_chat_id = parts[2]
+            role = parts[3] if len(parts) > 3 else "assistant"
+            # Pouze owner smí schvalovat
+            if not ma_pravo(chat_id, "users_manage"):
+                tg_answer_callback(cq_id, "⛔ Nemáš oprávnění")
+                return
+            ok = schval_uzivatele(novy_chat_id, role)
+            if ok:
+                tg_answer_callback(cq_id, "✅ Uživatel schválen")
+                tg_edit_message(chat_id, message_id,
+                    f"✅ Přístup schválen — role: <b>{role}</b>")
+                tg_send(text_vitejte("", role), chat_id=novy_chat_id)
+            else:
+                tg_answer_callback(cq_id, "Uživatel nenalezen")
+
+        elif data.startswith("user_zamit_"):
+            novy_chat_id = data.split("_")[2]
+            if not ma_pravo(chat_id, "users_manage"):
+                tg_answer_callback(cq_id, "⛔ Nemáš oprávnění")
+                return
+            zamitni_uzivatele(novy_chat_id)
+            tg_answer_callback(cq_id, "❌ Zamítnuto")
+            tg_edit_message(chat_id, message_id, f"❌ Přístup zamítnut.")
+            tg_send(text_pristup_odmitnuto(), chat_id=novy_chat_id)
+
     # Textová zpráva
     elif "message" in update:
         msg = update["message"]
@@ -224,9 +258,35 @@ def zpracuj_update(update: dict):
         if not text:
             return
 
-        # Pouze od Pavla
-        if chat_id != TELEGRAM_CHAT_ID:
+        # ── /start — registrace nového uživatele ──
+        if text.lower() == "/start":
+            user = get_user(chat_id)
+            if user and user.get("aktivni"):
+                tg_send(f"👋 Ahoj <b>{user['jmeno']}</b>! SA Agent je připraven.\n/sklad — stav zásob\n/inventura — zadat zásoby", chat_id=chat_id)
+            elif user and not user.get("aktivni"):
+                tg_send("⏳ Tvoje žádost čeká na schválení doktorem.", chat_id=chat_id)
+            else:
+                # Neznámý uživatel — zaregistruj jako pending a notifikuj ownera
+                from_user = msg.get("from", {})
+                jmeno = f"{from_user.get('first_name', '')} {from_user.get('last_name', '')}".strip() or "Neznámý"
+                registruj_pending(chat_id, jmeno)
+                tg_send("⏳ Tvoje žádost byla odeslána doktorovi. Vyčkej na schválení.", chat_id=chat_id)
+                # Notifikuj ownera
+                cfg = get_config()
+                owner = get_owner(cfg)
+                if owner:
+                    ordinace = cfg.get("ordinace", "ordinace")
+                    zprava, keyboard = text_zadost_o_pristup(chat_id, jmeno, ordinace)
+                    tg_send(zprava, reply_markup=keyboard, chat_id=owner["chat_id"])
             return
+
+        # ── Autorizace pro všechny ostatní příkazy ──
+        user = get_user(chat_id)
+        if not user or not user.get("aktivni"):
+            tg_send(text_neznam_uzivatele(), chat_id=chat_id)
+            return
+
+        prikaz = text.split()[0].lower() if text.startswith("/") else None
 
         # Příkazy SA
         if text.lower() in ["/sklad", "/sa", "sklad"]:

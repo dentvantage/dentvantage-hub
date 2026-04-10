@@ -6,6 +6,22 @@
     "check_den": "monday",
     "check_hodina": 8,
     "fa_signal_threshold_pct": 10,
+    "users": [
+      {
+        "chat_id": "5858139701",
+        "jmeno": "MUDr. Vachulka",
+        "role": "owner",
+        "aktivni": true
+      },
+      {
+        "chat_id": "999888777",
+        "jmeno": "Aneta Nováková",
+        "role": "assistant",
+        "aktivni": true,
+        "registrovan": "2026-04-10T16:39:30.551178",
+        "schvalen": "2026-04-10T16:39:30.551736"
+      }
+    ],
     "dodavatele": [
       {
         "id": "stomcentrum",
@@ -37,7 +53,7 @@
         "objednat_ks": 40,
         "spotreba_tyden": 8,
         "dodavatel_id": "stomcentrum",
-        "cena_kc": 14.50,
+        "cena_kc": 14.5,
         "kat_cislo_dodavatele": "SUP-4920"
       },
       {
@@ -50,7 +66,7 @@
         "objednat_ks": 40,
         "spotreba_tyden": 6,
         "dodavatel_id": "stomcentrum",
-        "cena_kc": 16.20,
+        "cena_kc": 16.2,
         "kat_cislo_dodavatele": "UBI-4040"
       },
       {
@@ -63,7 +79,7 @@
         "objednat_ks": 10,
         "spotreba_tyden": 1,
         "dodavatel_id": "dentalklinik",
-        "cena_kc": 680.00,
+        "cena_kc": 680.0,
         "kat_cislo_dodavatele": "IVX-559893"
       },
       {
@@ -76,7 +92,7 @@
         "objednat_ks": 6,
         "spotreba_tyden": 0.5,
         "dodavatel_id": "dentalklinik",
-        "cena_kc": 320.00,
+        "cena_kc": 320.0,
         "kat_cislo_dodavatele": "CAL-21002"
       }
     ]
